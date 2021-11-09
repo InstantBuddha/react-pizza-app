@@ -3,7 +3,7 @@ import axios from 'axios'
 import PizzaCard from './PizzaCard'
 
 class PizzasLister extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -14,84 +14,73 @@ class PizzasLister extends Component {
         }
 
         this.ingredientsLister = this.ingredientsLister.bind(this)
-        this.pizzaDetailsCalculator = this.pizzaDetailsCalculator.bind(this)
+        this.ingredientsStringCreator = this.ingredientsStringCreator.bind(this)
+        this.pizzaPriceCalculator = this.pizzaPriceCalculator.bind(this)
 
     }
 
-    async componentDidMount(){
-        
+    async componentDidMount() {
+
         await axios.get("https://doclerlabs.github.io/mobile-native-challenge/pizzas.json")
-        .then(response => {
-            let copiedTempState = { ...this.state }
-            copiedTempState.pizzas = response.data.pizzas
-            copiedTempState.basePrice = response.data.basePrice
-            this.setState(copiedTempState)
-        })
-        .catch(error => {console.log(error)})
+            .then(response => {
+                let copiedTempState = { ...this.state }
+                copiedTempState.pizzas = response.data.pizzas
+                copiedTempState.basePrice = response.data.basePrice
+                this.setState(copiedTempState)
+            })
+            .catch(error => { console.log(error) })
 
         await axios.get("https://doclerlabs.github.io/mobile-native-challenge/ingredients.json")
-        .then(response => {
-            let copiedTempState = { ...this.state }
-            copiedTempState.ingredients = response.data
-            this.setState(copiedTempState)
-        })
-        .catch(error => {console.log(error)})
-
-        let copiedTempState = { ...this.state }
-        copiedTempState.ready = true
-        this.setState(copiedTempState)
+            .then(response => {
+                let copiedTempState = { ...this.state }
+                copiedTempState.ingredients = response.data
+                copiedTempState.ready = true
+                this.setState(copiedTempState)
+            })
+            .catch(error => { console.log(error) })
 
         console.log(this.state)
-        
+
     }
 
-    ingredientsLister(pizzaIngredientsList){
-        let pizzaTempArray = []
-        pizzaIngredientsList.forEach(element => {
-            const result = this.state.ingredients.find(
-                ({id}) => id=== element
-            )
-            console.log(result)
-            pizzaTempArray.push(result)
-            return result
-        });
-        //console.log(pizzaTempArray)
+    ingredientsLister(pizzaIngredientsIds) {
+        //console.log(pizzaIngredientsIds)
+        let pizzaIngredients = this.state.ingredients.filter(
+            element => pizzaIngredientsIds.includes(element.id)
+        )
 
+        return pizzaIngredients
+    }
+
+    ingredientsStringCreator(pizzaIngredientsIds){
+        const pizzaIngredients = this.ingredientsLister(pizzaIngredientsIds)
         let ingredientNameList = []
-        pizzaTempArray.forEach(element => ingredientNameList.push(element.name))
-        //console.log(ingredientNameList)
-        const ingredientsString = ingredientNameList.join()
-
-        let pizzaPrice = this.state.basePrice
-        
-        pizzaTempArray.forEach(element => pizzaPrice += element.price)
-        console.log(pizzaPrice)
-
-       return {ingredientNameList: ingredientsString,
-                pizzaPrice: pizzaPrice}
+        pizzaIngredients.forEach(element => ingredientNameList.push(element.name))
+        return ingredientNameList.join()
     }
 
-    pizzaDetailsCalculator(pizzaIngredientsList){
-        const ingredientsNameList = []
-        pizzaIngredientsList.ingredients.forEach(element => ingredientsNameList.push(element.name))
-        console.log(ingredientsNameList)
-        return ingredientsNameList
+    pizzaPriceCalculator(pizzaIngredientsIds){
+        const pizzaIngredients = this.ingredientsLister(pizzaIngredientsIds)
+        const pizzaPriceArr = pizzaIngredients.map(i => {return i.price})
+        const pizzaFullPrice = pizzaPriceArr.reduce((acc, current)=>acc+current, this.state.basePrice)
+        return pizzaFullPrice
     }
 
-        render() {
+    render() {
         //console.log(this.state)
         const pizzas = this.state.pizzas
-               
+
         return (
-            <div>                
+            <div>
                 {
-                this.state.ready ? 
-                pizzas.map(
-                pizza => <PizzaCard key={pizza.name}
+                    this.state.ready ?
+                        pizzas.map(
+                            pizza => <PizzaCard key={pizza.name}
                                 name={pizza.name}
-                                ingredients={this.ingredientsLister(pizza.ingredients)}
+                                ingredients={this.ingredientsStringCreator(pizza.ingredients)}
+                                fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
                                 imageUrl={pizza.imageUrl} />
-                ): <h1>Loading...</h1>
+                        ) : <h1>Loading...</h1>
                 }
             </div>
         )
