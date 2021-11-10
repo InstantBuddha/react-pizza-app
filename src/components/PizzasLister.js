@@ -44,7 +44,6 @@ class PizzasLister extends Component {
     }
 
     ingredientsLister(pizzaIngredientsIds) {
-        //console.log(pizzaIngredientsIds)
         let pizzaIngredients = this.state.ingredients.filter(
             element => pizzaIngredientsIds.includes(element.id)
         )
@@ -67,11 +66,11 @@ class PizzasLister extends Component {
     }
 
     render() {
-        //console.log(this.state)
         const pizzas = this.state.pizzas
+        const bootstrapCss = "d-flex flex-column align-items-center"
 
         return (
-            <div>
+            <div class={bootstrapCss}>
                 {
                     this.state.ready ?
                         pizzas.map(
@@ -80,7 +79,7 @@ class PizzasLister extends Component {
                                 ingredients={this.ingredientsStringCreator(pizza.ingredients)}
                                 fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
                                 imageUrl={pizza.imageUrl} />
-                        ) : <h1>Loading...</h1>
+                        ) : <i className="fa fa-spinner fa-spin"></i>
                 }
             </div>
         )
