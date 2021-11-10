@@ -14,12 +14,12 @@ export default function PizzaCard(props) {
 
     return (
         <div key={props.name}
-            class={bootstrapStyle}
+            className={bootstrapStyle}
             style={divCss} >
             <div>
-            </div>    
-            <div class="row align-items-end">
-                <div class="col-9 " >
+            </div>
+            <div className="row align-items-end">
+                <div className="col-9 " >
                     <div>
                         <h1>{props.name}</h1>
                     </div>
@@ -28,8 +28,14 @@ export default function PizzaCard(props) {
                     </div>
 
                 </div>
-                <div class="col-3">
-                    <button >
+                <div className="col-3">
+                    <button onClick={() => props.pizzaAdder(
+                        {
+                            productType: "pizza",
+                            pizzaName: props.name,
+                            ingredients: props.ingredients,
+                            price: props.fullPrice
+                        })} >
                         <FontAwesomeIcon icon="cart-plus" />
                         {" $" + props.fullPrice}
                     </button>

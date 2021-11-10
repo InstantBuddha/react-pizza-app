@@ -6,8 +6,19 @@ class MainWrapper extends Component {
         super(props)
 
         this.state = {
-            whatToShow: "pizzas"
+            whatToShow: "pizzas",
+            inCart: []
         }
+
+        this.productCartAdder = this.productCartAdder.bind(this)
+    }
+
+    productCartAdder(productToAdd){
+        console.log("productCartAdder")
+        let copiedTempState = { ...this.state }
+        copiedTempState.inCart.push(productToAdd)
+        this.setState(copiedTempState)
+        console.log(this.state)
     }
 
 
@@ -15,7 +26,7 @@ class MainWrapper extends Component {
     render() {
         return (
             <div>
-                <PizzasLister />
+                <PizzasLister productCartAdder={this.productCartAdder} />
             </div>
         )
     }

@@ -16,6 +16,7 @@ class PizzasLister extends Component {
         this.ingredientsLister = this.ingredientsLister.bind(this)
         this.ingredientsStringCreator = this.ingredientsStringCreator.bind(this)
         this.pizzaPriceCalculator = this.pizzaPriceCalculator.bind(this)
+        this.cartAdder = this.cartAdder.bind(this)
 
     }
 
@@ -65,20 +66,27 @@ class PizzasLister extends Component {
         return pizzaFullPrice
     }
 
+    cartAdder(addedPizza){
+        //console.log(addedPizza)
+        this.props.productCartAdder(addedPizza)
+    }
+
     render() {
         const pizzas = this.state.pizzas
         const bootstrapCss = "d-flex flex-column align-items-center"
 
         return (
-            <div class={bootstrapCss}>
+            <div className={bootstrapCss}>
                 {
                     this.state.ready ?
                         pizzas.map(
-                            pizza => <PizzaCard key={pizza.name}
+                            pizza => <PizzaCard 
+                                key={pizza.name}
                                 name={pizza.name}
                                 ingredients={this.ingredientsStringCreator(pizza.ingredients)}
                                 fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
-                                imageUrl={pizza.imageUrl} />
+                                imageUrl={pizza.imageUrl}
+                                pizzaAdder={this.cartAdder} />
                         ) : <i className="fa fa-spinner fa-spin"></i>
                 }
             </div>
