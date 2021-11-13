@@ -9,7 +9,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { faCartPlus, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 
-////////////////
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

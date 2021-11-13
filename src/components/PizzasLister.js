@@ -40,34 +40,27 @@ class PizzasLister extends Component {
             })
             .catch(error => { console.log(error) })
 
-        console.log(this.state)
-
     }
 
     ingredientsLister(pizzaIngredientsIds) {
-        let pizzaIngredients = this.state.ingredients.filter(
+        return this.state.ingredients.filter(
             element => pizzaIngredientsIds.includes(element.id)
         )
-
-        return pizzaIngredients
     }
 
     ingredientsStringCreator(pizzaIngredientsIds){
-        const pizzaIngredients = this.ingredientsLister(pizzaIngredientsIds)
-        let ingredientNameList = []
-        pizzaIngredients.forEach(element => ingredientNameList.push(element.name))
-        return ingredientNameList.join()
+       return this.ingredientsLister(pizzaIngredientsIds)
+       .map(ingredient => {return ingredient.name})
+       .join(", ")
     }
 
     pizzaPriceCalculator(pizzaIngredientsIds){
-        const pizzaIngredients = this.ingredientsLister(pizzaIngredientsIds)
-        const pizzaPriceArr = pizzaIngredients.map(i => {return i.price})
-        const pizzaFullPrice = pizzaPriceArr.reduce((acc, current)=>acc+current, this.state.basePrice)
-        return pizzaFullPrice
+       return this.ingredientsLister(pizzaIngredientsIds)
+       .map(ingredient => {return ingredient.price})
+       .reduce((acc, current)=>acc+current, this.state.basePrice)
     }
 
     cartAdder(addedPizza){
-        //console.log(addedPizza)
         this.props.productCartAdder(addedPizza)
     }
 
