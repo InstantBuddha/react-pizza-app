@@ -1,0 +1,29 @@
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+
+function DrinkCard(props) {
+    const bootstrapStyle = "w-25 m-1 border border-secondary container "
+
+    return (
+        <div key={props.drinkId}
+            className={bootstrapStyle}>
+            <div className={"row justify-content-between align-items-center"}>
+                <div className="col-2">
+                    <button >
+                        <FontAwesomeIcon icon="cart-plus" />
+                    </button>
+                </div>
+                <div className="col-8">
+                    <h2>{props.name}</h2>
+                </div>
+                <div className="col-2">
+                    <h5>${props.price}</h5>
+                </div>
+            </div>
+
+        </div>
+    )
+}
+
+export default DrinkCard

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function PizzaCard(props) {
+function PizzaCard(props) {
     const bootstrapStyle = "w-25 m-1 border border-secondary container "
 
     const divCss = {
@@ -18,7 +18,7 @@ export default function PizzaCard(props) {
             style={divCss} >
             <div>
             </div>
-            <div className="row align-items-end">
+            <div className="row align-items-end align-items-center">
                 <div className="col-9 " >
                     <div>
                         <h1>{props.name}</h1>
@@ -46,3 +46,5 @@ export default function PizzaCard(props) {
         </div>
     )
 }
+
+export default PizzaCard
