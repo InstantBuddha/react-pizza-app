@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import CartLister from './CartLister'
+import DrinksLister from './DrinksLister'
 import PizzasLister from './PizzasLister'
+import TopMenu from './TopMenu'
 
 class MainWrapper extends Component {
     constructor(props){
@@ -11,6 +14,8 @@ class MainWrapper extends Component {
         }
 
         this.productCartAdder = this.productCartAdder.bind(this)
+        this.displaySelector = this.displaySelector.bind(this)
+        this.listerReturner = this.listerReturner.bind(this)
     }
 
     productCartAdder(productToAdd){
@@ -18,15 +23,34 @@ class MainWrapper extends Component {
         let copiedTempState = { ...this.state }
         copiedTempState.inCart.push(productToAdd)
         this.setState(copiedTempState)
-        console.log(this.state)
     }
 
+    displaySelector(toDisplay){
+        let copiedTempState = { ...this.state }
+        copiedTempState.whatToShow = toDisplay
+        this.setState(copiedTempState)
+    }
 
+    listerReturner(){
+        switch(this.state.whatToShow){
+            case "pizzas":
+                return <PizzasLister productCartAdder={this.productCartAdder} />
+            case "drinks":
+                return <DrinksLister />
+            case "cart":
+                return <CartLister />
+            default:
+                console.log("there is a problem")
+                break        
+
+        }
+    }
 
     render() {
         return (
             <div>
-                <PizzasLister productCartAdder={this.productCartAdder} />
+                <TopMenu displaySelector={this.displaySelector} />
+                {this.listerReturner()}
             </div>
         )
     }
