@@ -23,7 +23,7 @@ class DrinksLister extends Component {
     }
 
     cartAdder(addedDrink){
-        this.props.productCartAdder(addedDrink)
+        this.props.productCartAdder(addedDrink, "drink")
     }
     
     render() {

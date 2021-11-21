@@ -10,7 +10,10 @@ class MainWrapper extends Component {
 
         this.state = {
             whatToShow: "pizzas",
-            inCart: []
+            inCart: {
+                pizzas: [],
+                drinks:[]
+            }
         }
 
         this.productCartAdder = this.productCartAdder.bind(this)
@@ -18,12 +21,22 @@ class MainWrapper extends Component {
         this.listerReturner = this.listerReturner.bind(this)
     }
 
-    productCartAdder(productToAdd){
-        console.log("productCartAdder")
+    productCartAdder(productToAdd, productType){
         let copiedTempState = { ...this.state }
-        copiedTempState.inCart.push(productToAdd)
+        switch(productType){
+            case "pizza":
+                console.log("pizza")
+                copiedTempState.inCart.pizzas.push(productToAdd)
+                break
+            case "drink":
+                console.log("drink")
+                copiedTempState.inCart.drinks.push(productToAdd)
+                break
+        }
+                
         this.setState(copiedTempState)
     }
+
 
     displaySelector(toDisplay){
         let copiedTempState = { ...this.state }
