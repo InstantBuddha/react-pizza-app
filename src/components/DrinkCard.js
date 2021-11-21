@@ -10,15 +10,15 @@ function DrinkCard(props) {
             className={bootstrapStyle}>
             <div className={"row justify-content-between align-items-center"}>
                 <div className="col-2">
-                    <button >
+                    <button onClick={()=> props.drinkAdder(props.drink)} >
                         <FontAwesomeIcon icon="cart-plus" />
                     </button>
                 </div>
                 <div className="col-8">
-                    <h2>{props.name}</h2>
+                    <h2>{props.drink.name}</h2>
                 </div>
                 <div className="col-2">
-                    <h5>${props.price}</h5>
+                    <h5>${props.drink.price}</h5>
                 </div>
             </div>
 
@@ -26,4 +26,4 @@ function DrinkCard(props) {
     )
 }
 
-export default DrinkCard
+export default React.memo(DrinkCard) 

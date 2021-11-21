@@ -10,6 +10,8 @@ class DrinksLister extends Component {
              drinks: [],
              ready: false
         }
+
+        this.cartAdder = this.cartAdder.bind(this)
     }
 
     componentDidMount(){
@@ -19,22 +21,24 @@ class DrinksLister extends Component {
                             ready: true})
         })
     }
+
+    cartAdder(addedDrink){
+        this.props.productCartAdder(addedDrink)
+    }
     
     render() {
         const drinks = this.state.drinks
         const bootstrapCss = "d-flex flex-column align-items-center"
 
-        console.log(this.state)
         return (
             <div className={bootstrapCss}>
                 {
                     this.state.ready ?
                     drinks.map(
                         drink => <DrinkCard 
-                            key={drink.name}
-                            name={drink.name}
-                            price={drink.price}
-                            drinkId={drink.id} />
+                            key={drink.id}
+                            drink={drink}
+                            drinkAdder={this.cartAdder} />
                     ) : <i className="fa fa-spinner fa-spin"></i>
                 }
             </div>

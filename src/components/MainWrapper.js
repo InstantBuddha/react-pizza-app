@@ -36,7 +36,7 @@ class MainWrapper extends Component {
             case "pizzas":
                 return <PizzasLister productCartAdder={this.productCartAdder} />
             case "drinks":
-                return <DrinksLister />
+                return <DrinksLister productCartAdder={this.productCartAdder} />
             case "cart":
                 return <CartLister />
             default:

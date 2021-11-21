@@ -47,4 +47,4 @@ function PizzaCard(props) {
     )
 }
 
-export default PizzaCard
+export default React.memo(PizzaCard) 
