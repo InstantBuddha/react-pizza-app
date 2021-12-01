@@ -51,7 +51,7 @@ class MainWrapper extends Component {
             case "drinks":
                 return <DrinksLister productCartAdder={this.productCartAdder} />
             case "cart":
-                return <CartLister />
+                return <CartLister inCartList={this.state.inCart} />
             default:
                 console.log("there is a problem")
                 break        
