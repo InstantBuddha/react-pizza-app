@@ -8,6 +8,7 @@ class CartLister extends Component {
         this.state = {...props}
 
         this.cartListCreator = this.cartListCreator.bind(this)
+        this.cartItemRemover = this.cartItemRemover.bind(this)
     }
     
     cartListCreator(objectToTransform){
@@ -31,12 +32,15 @@ class CartLister extends Component {
             )
         )
     }
+
+    cartItemRemover(itemId){
+        console.log("remove " + itemId)
+    }
     
     render() {
         const cartFullList = this.cartListCreator(this.state.inCartList)
         const bootstrapCss = "d-flex flex-column align-items-center"
         
-        console.log(cartFullList)
         return (
             <div >
                 <div>
@@ -47,7 +51,9 @@ class CartLister extends Component {
                         cartItem => <CartCard 
                         name = {cartItem.name}
                         price = {cartItem.price}
-                        key = {cartItem.uniqueId} />
+                        key = {cartItem.uniqueId}
+                        uniqueId = {cartItem.uniqueId}
+                        cartItemRemover={this.cartItemRemover} />
                     )}
                 </div>
             </div>

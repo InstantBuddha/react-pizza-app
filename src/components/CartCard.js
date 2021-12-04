@@ -8,7 +8,8 @@ function CartCard(props) {
         <div className={bootstrapStyle}>
             <div className={"row justify-content-between align-items-center"} >
                 <div className="col-2">
-                    <button ><FontAwesomeIcon icon="times" /></button>
+                    <button onClick={()=> props.cartItemRemover(props.uniqueId)}
+                     ><FontAwesomeIcon icon="times" /></button>
                 </div>
                 <div className="col-8">
                     <h2>{props.name}</h2>
