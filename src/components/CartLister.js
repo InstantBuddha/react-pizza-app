@@ -11,31 +11,43 @@ class CartLister extends Component {
     }
     
     cartListCreator(objectToTransform){
-        return objectToTransform.map(
-            item => {
+        return objectToTransform.pizzas.map(
+            (pizza, uniqueId) => {
                 return {
-                    name : item.name,
-                    price : item.price
+                    name : pizza.name,
+                    price : pizza.price,
+                    uniqueId: ("p"+uniqueId)
                 }
             }
+        ).concat(
+            objectToTransform.drinks.map(
+                (drink, uniqueId) => {
+                    return {
+                        name : drink.name,
+                        price : drink.price,
+                        uniqueId : ("d"+uniqueId)
+                    }
+                }
+            )
         )
     }
     
     render() {
-        const cartFullList = this.cartListCreator(this.state.inCartList.pizzas)
-            .concat(this.cartListCreator(this.state.inCartList.drinks))
+        const cartFullList = this.cartListCreator(this.state.inCartList)
+        const bootstrapCss = "d-flex flex-column align-items-center"
         
         console.log(cartFullList)
         return (
-            <div>
+            <div >
                 <div>
-                    <h1>Cart</h1>
+                    <h2>Your Cart</h2>
                 </div>
-                <div>
+                <div className={bootstrapCss} >
                     {cartFullList.map(
                         cartItem => <CartCard 
                         name = {cartItem.name}
-                        price = {cartItem.price} />
+                        price = {cartItem.price}
+                        key = {cartItem.uniqueId} />
                     )}
                 </div>
             </div>
