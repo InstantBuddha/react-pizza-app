@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import CartCard from './CartCard'
 
 class CartLister extends Component {
     constructor(props) {
@@ -28,11 +29,14 @@ class CartLister extends Component {
         return (
             <div>
                 <div>
-                <h1>Cart</h1>
+                    <h1>Cart</h1>
                 </div>
-
                 <div>
-
+                    {cartFullList.map(
+                        cartItem => <CartCard 
+                        name = {cartItem.name}
+                        price = {cartItem.price} />
+                    )}
                 </div>
             </div>
         )
