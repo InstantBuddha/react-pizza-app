@@ -34,7 +34,7 @@ class CartLister extends Component {
     }
 
     cartItemRemover(itemId){
-        console.log("remove " + itemId)
+        this.props.cartItemRemover(itemId)
     }
     
     render() {
