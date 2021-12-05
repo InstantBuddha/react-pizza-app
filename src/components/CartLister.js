@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CartCard from './CartCard'
+import FullPrice from './FullPrice'
 
 class CartLister extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class CartLister extends Component {
 
         this.cartListCreator = this.cartListCreator.bind(this)
         this.cartItemRemover = this.cartItemRemover.bind(this)
+        this.totalPriceCalculator = this.totalPriceCalculator.bind(this)
     }
     
     cartListCreator(objectToTransform){
@@ -36,6 +38,12 @@ class CartLister extends Component {
     cartItemRemover(itemId){
         this.props.cartItemRemover(itemId)
     }
+
+    totalPriceCalculator(itemsArray){
+        return itemsArray.map( item => {
+            return item.price
+        }).reduce( (total, currentprice) =>  total + currentprice )
+    }
     
     render() {
         const cartFullList = this.cartListCreator(this.state.inCartList)
@@ -55,6 +63,9 @@ class CartLister extends Component {
                         uniqueId = {cartItem.uniqueId}
                         cartItemRemover={this.cartItemRemover} />
                     )}
+                </div>
+                <div className={bootstrapCss} >
+                        <FullPrice fullPrice={this.totalPriceCalculator(cartFullList)} />
                 </div>
             </div>
         )
