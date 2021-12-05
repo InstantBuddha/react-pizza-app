@@ -23,4 +23,4 @@ function CartCard(props) {
     )
 }
 
-export default CartCard
+export default React.memo(CartCard) 
