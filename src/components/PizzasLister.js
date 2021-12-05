@@ -61,7 +61,7 @@ class PizzasLister extends Component {
     }
 
     cartAdder(addedPizza){
-        this.props.productCartAdder(addedPizza)
+        this.props.productCartAdder(addedPizza, "pizza")
     }
 
     render() {

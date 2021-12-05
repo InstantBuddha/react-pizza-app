@@ -31,8 +31,7 @@ function PizzaCard(props) {
                 <div className="col-3">
                     <button onClick={() => props.pizzaAdder(
                         {
-                            productType: "pizza",
-                            pizzaName: props.name,
+                            name: props.name,
                             ingredients: props.ingredients,
                             price: props.fullPrice
                         })} >
