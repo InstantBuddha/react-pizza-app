@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CartLister from './CartLister'
 import DrinksLister from './DrinksLister'
+import OrderDetails from './OrderDetails'
 import PizzasLister from './PizzasLister'
 import TopMenu from './TopMenu'
 
@@ -20,6 +21,7 @@ class MainWrapper extends Component {
         this.displaySelector = this.displaySelector.bind(this)
         this.listerReturner = this.listerReturner.bind(this)
         this.cartItemRemover = this.cartItemRemover.bind(this)
+        this.proceedToCheckout = this.proceedToCheckout.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -54,6 +56,10 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
+    proceedToCheckout(){
+        this.displaySelector("checkout")
+    }
+
     displaySelector(toDisplay) {
         let copiedTempState = { ...this.state }
         copiedTempState.whatToShow = toDisplay
@@ -68,7 +74,10 @@ class MainWrapper extends Component {
                 return <DrinksLister productCartAdder={this.productCartAdder} />
             case "cart":
                 return <CartLister inCartList={this.state.inCart} 
-                            cartItemRemover={this.cartItemRemover} />
+                            cartItemRemover={this.cartItemRemover}
+                            proceedToCheckout={this.proceedToCheckout} />
+            case "checkout":
+                return <OrderDetails />                
             default:
                 break
 

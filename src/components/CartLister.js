@@ -67,10 +67,15 @@ class CartLister extends Component {
                 <div className={bootstrapCss} >
                         <FullPrice fullPrice={this.totalPriceCalculator(cartFullList)} />
                 </div>
-                <div>
+                <div className={bootstrapCss}>
+                    <div className={"w-25 m-1 container "}>
                     {cartFullList.length > 0 &&
-                        <button>Order</button>
+                        <button className="btn btn-success btn-lg btn-block w-100"
+                                onClick={this.props.proceedToCheckout}
+                                >Order</button>
                     }
+                    </div>
+                    
                     
                 </div>
             </div>
