@@ -27,6 +27,7 @@ class OrderDetails extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.regexChecker = this.regexChecker.bind(this)
     }
 
     handleChange(event) {
@@ -56,19 +57,52 @@ class OrderDetails extends Component {
                 break
         }
 
+        copiedTempState.errorMessage = false
         console.log(copiedTempState)
         this.setState(copiedTempState)
     }
 
     handleSubmit(event) {
+        const allRegex = {
+            clientFirstName: "^[a-zA-Z]{3,}$",
+            clientLastName: "^[a-zA-Z]{3,}$",
+            clientAddress: "[a-zA-Z]{3,}\\s+[0-9]+",
+            clientEmail: "^[a-zA-Z0-9_!#$&+~.-]{3,}@[a-zA-Z0-9.-]{3,}\\.[a-zA-Z]{2,6}$",
+            clientPhone: "^(00)|(\\+)[0-9]{11,}$"
+        }
+        const errorrMessages = {
+            clientFirstName: "Something is not ok with your First Name. It should be at least 3 characters long and without weard symbols or numbers.",
+            clientLastName: "Something is not ok with your Last Name. It should be at least 3 characters long and without weard symbols or numbers.",
+            clientAddress: "Something is not ok with your address. It should contain your house number as well.",
+            clientEmail: "Something is not ok with your email address",
+            clientPhone: "Your phone number should start with 00 or + and it should have the country code as well."
+        }
         let copiedTempState = { ...this.state }
+
+        if(!this.regexChecker(copiedTempState.tempClientInfo.clientFirstName,allRegex.clientFirstName)){
+            copiedTempState.errorMessage = errorrMessages.clientFirstName
+            
+        }
+        if(!this.regexChecker(copiedTempState.tempClientInfo.clientLastName,allRegex.clientLastName)){
+            copiedTempState.errorMessage = errorrMessages.clientLastName
+            
+        }
         if (!copiedTempState.tempClientInfo.agreed) {
             copiedTempState.errorMessage = "Is it a prank or you're hungry? Check the checkbox to get your food!"
+            
         }
+
+        //console.log(this.regexChecker("0001123456789",allRegex.clientPhone))
+
 
         this.setState(copiedTempState)
         event.preventDefault()
 
+    }
+
+    regexChecker(textToCheck, regex){
+        const tempRegex = new RegExp(regex)
+        return tempRegex.test(textToCheck)
     }
 
     render() {
