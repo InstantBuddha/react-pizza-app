@@ -74,33 +74,42 @@ class OrderDetails extends Component {
             clientLastName: "Something is not ok with your Last Name. It should be at least 3 characters long and without weard symbols or numbers.",
             clientAddress: "Something is not ok with your address. It should contain your house number as well.",
             clientEmail: "Something is not ok with your email address",
-            clientPhone: "Your phone number should start with 00 or + and it should have the country code as well."
+            clientPhone: "Your phone number should start with 00 or + and it should have the country code as well.",
+            agreed: "Is it a prank or you're hungry? Check the checkbox to get your food!"
         }
         let copiedTempState = { ...this.state }
 
-        Object.keys(copiedTempState.tempClientInfo).map((key)=>{
-            if(!this.regexChecker(copiedTempState.tempClientInfo[key], allRegex[key])){
-                copiedTempState.errorMessage = errorrMessages[key]
+        
+        let foundErrorMessages = []
+        Object.keys(copiedTempState.tempClientInfo).forEach((key) => {
+            if (!this.regexChecker(copiedTempState.tempClientInfo[key], allRegex[key])) {
+                foundErrorMessages.push(errorrMessages[key]) 
             }
-            
+
         })
 
+        console.log(foundErrorMessages)
+
         if (!copiedTempState.tempClientInfo.agreed) {
-            copiedTempState.errorMessage = "Is it a prank or you're hungry? Check the checkbox to get your food!"            
+            foundErrorMessages.push(errorrMessages.agreed) 
         }
 
-        if(!copiedTempState.errorMessage){
-            copiedTempState.clientInfo = { ...copiedTempState.tempClientInfo}
+        if (foundErrorMessages.length < 1) {
+            copiedTempState.clientInfo = { ...copiedTempState.tempClientInfo }
+        }else{
+            copiedTempState.errorMessage = foundErrorMessages[0]
         }
 
-        this.setState(copiedTempState)
+        this.setState(copiedTempState, () => {
+            this.props.orderIsReadyDisplayer(this.state.clientInfo)
+        })
         event.preventDefault()
         //csak második gombnyomással tölti fel a statet
-        this.props.orderIsReadyDisplayer(this.state.clientInfo)
         
+
     }
 
-    regexChecker(textToCheck, regex){
+    regexChecker(textToCheck, regex) {
         const tempRegex = new RegExp(regex)
         return tempRegex.test(textToCheck)
     }
