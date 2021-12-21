@@ -22,6 +22,7 @@ class MainWrapper extends Component {
         this.listerReturner = this.listerReturner.bind(this)
         this.cartItemRemover = this.cartItemRemover.bind(this)
         this.proceedToCheckout = this.proceedToCheckout.bind(this)
+        this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -60,6 +61,11 @@ class MainWrapper extends Component {
         this.displaySelector("checkout")
     }
 
+    orderIsReadyDisplayer(clientInfo){
+        console.log("orderisready")
+        console.log(clientInfo)
+    }
+
     displaySelector(toDisplay) {
         let copiedTempState = { ...this.state }
         copiedTempState.whatToShow = toDisplay
@@ -77,7 +83,7 @@ class MainWrapper extends Component {
                             cartItemRemover={this.cartItemRemover}
                             proceedToCheckout={this.proceedToCheckout} />
             case "checkout":
-                return <OrderDetails />                
+                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer} />                
             default:
                 break
 
