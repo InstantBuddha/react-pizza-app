@@ -88,8 +88,7 @@ class OrderDetails extends Component {
 
         })
 
-        console.log(foundErrorMessages)
-
+        
         if (!copiedTempState.tempClientInfo.agreed) {
             foundErrorMessages.push(errorrMessages.agreed) 
         }
@@ -104,7 +103,6 @@ class OrderDetails extends Component {
             this.props.orderIsReadyDisplayer(this.state.clientInfo)
         })
         event.preventDefault()
-        //csak második gombnyomással tölti fel a statet
         
 
     }

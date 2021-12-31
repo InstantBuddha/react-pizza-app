@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CartLister from './CartLister'
 import DrinksLister from './DrinksLister'
 import OrderDetails from './OrderDetails'
+import OrderReady from './OrderReady'
 import PizzasLister from './PizzasLister'
 import TopMenu from './TopMenu'
 
@@ -23,6 +24,7 @@ class MainWrapper extends Component {
         this.cartItemRemover = this.cartItemRemover.bind(this)
         this.proceedToCheckout = this.proceedToCheckout.bind(this)
         this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
+        this.backToMainPage = this.backToMainPage.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -62,8 +64,11 @@ class MainWrapper extends Component {
     }
 
     orderIsReadyDisplayer(clientInfo){
-        console.log("orderisready")
-        console.log(clientInfo)
+        this.displaySelector("foodArriving")
+    }
+
+    backToMainPage(){
+        this.displaySelector("pizzas")
     }
 
     displaySelector(toDisplay) {
@@ -83,7 +88,9 @@ class MainWrapper extends Component {
                             cartItemRemover={this.cartItemRemover}
                             proceedToCheckout={this.proceedToCheckout} />
             case "checkout":
-                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer} />                
+                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer} />
+            case "foodArriving":
+                return <OrderReady backToMainPage={this.backToMainPage}/>                    
             default:
                 break
 
@@ -93,7 +100,7 @@ class MainWrapper extends Component {
     render() {
         return (
             <div>
-                <TopMenu displaySelector={this.displaySelector} />
+                {this.state.whatToShow !== "foodArriving" && <TopMenu displaySelector={this.displaySelector} />}
                 {this.listerReturner()}
             </div>
         )
