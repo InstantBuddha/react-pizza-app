@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ErrorMessage from './ErrorMessage'
+import InputField from './InputField'
 
 class OrderDetails extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class OrderDetails extends Component {
 
     handleChange(event) {
         let copiedTempState = { ...this.state }
-
+        console.log(event)
         switch (event.target.name) {
             case "firstName":
                 copiedTempState.tempClientInfo.clientFirstName = event.target.value
@@ -62,6 +63,7 @@ class OrderDetails extends Component {
     }
 
     handleSubmit(event) {
+        console.log(this.state.tempClientInfo)
         const allRegex = {
             clientFirstName: "^[a-zA-Z]{3,}$",
             clientLastName: "^[a-zA-Z]{3,}$",
@@ -77,6 +79,9 @@ class OrderDetails extends Component {
             clientPhone: "Your phone number should start with 00 or + and it should have the country code as well.",
             agreed: "Is it a prank or you're hungry? Check the checkbox to get your food!"
         }
+
+        event.preventDefault()
+
         let copiedTempState = { ...this.state }
 
         
@@ -87,7 +92,7 @@ class OrderDetails extends Component {
             }
 
         })
-
+        console.log(foundErrorMessages)
         
         if (!copiedTempState.tempClientInfo.agreed) {
             foundErrorMessages.push(errorrMessages.agreed) 
@@ -95,14 +100,16 @@ class OrderDetails extends Component {
 
         if (foundErrorMessages.length < 1) {
             copiedTempState.clientInfo = { ...copiedTempState.tempClientInfo }
+            this.setState(copiedTempState, () => {
+                this.props.orderIsReadyDisplayer(this.state.clientInfo)
+            })
         }else{
             copiedTempState.errorMessage = foundErrorMessages[0]
+            this.setState(copiedTempState)
         }
 
-        this.setState(copiedTempState, () => {
-            this.props.orderIsReadyDisplayer(this.state.clientInfo)
-        })
-        event.preventDefault()
+       
+        
         
 
     }
@@ -114,6 +121,46 @@ class OrderDetails extends Component {
 
     render() {
         const bootstrapCss = "d-flex flex-column align-items-center"
+
+        const formInputs = [
+            {name: "firstName",
+            labelText: "First name:",
+            type:"text",
+            pattern:".+",
+            placeholder:"i.e.: John"
+            },
+            {name: "lastName",
+            labelText: "Last name:",
+            type:"text",
+            pattern:".+",
+            placeholder:"i.e.: Doe"
+            },
+            {name: "address",
+            labelText: "Your address:",
+            type:"text",
+            pattern:".+",
+            placeholder:""
+            },
+            {name: "email",
+            labelText: "Your email:",
+            type:"email",
+            pattern:".+",
+            placeholder:""
+            },
+            {name: "telephone",
+            labelText: "Your phone number:",
+            type:"tel",
+            pattern:"^[+]?[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",
+            placeholder:""
+            },
+            {name: "notes",
+            labelText: "Your message to the pizzaboy:",
+            type:"notes",
+            pattern:".*",
+            placeholder:"i.e.: The doorbell doesn't work, call me instead"
+            },
+        ]
+
         const customCSS = {
             wrapper: "border border-secondary p-2 rounded bg-light",
             inputs: "form-control m-1",
@@ -122,6 +169,16 @@ class OrderDetails extends Component {
             button: "btn btn-primary mt-1 "
         }
 
+        const inputFields = formInputs.map(
+            formInput => <InputField 
+                key={formInput.name}
+                labelText={formInput.labelText}
+                type={formInput.type}
+                onChange={this.handleChange}
+                pattern={formInput.pattern}
+                placeholder= {formInput.placeholder}
+                className={customCSS.inputs} />
+        )
         return (
             <div className={bootstrapCss} >
                 <div className={"w-25 m-1 container "}>
@@ -129,56 +186,7 @@ class OrderDetails extends Component {
                         <h1>Order details</h1>
 
                         <form onSubmit={this.handleSubmit} >
-                            <label>First name:
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
-                            <label>Last name:
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
-                            <label >Your address:
-                                <input
-                                    type="text"
-                                    name="address"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
-                            <label>Your email:
-                                <input
-                                    type="email"
-                                    name="email"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
-                            <label>Your phone number:
-                                <input
-                                    type="tel"
-                                    name="telephone"
-                                    pattern="^[+]?[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
-                            <label>Your message to the pizzaboy:
-                                <input
-                                    type="text"
-                                    name="notes"
-                                    placeholder="The doorbell doesn't work, call me instead"
-                                    onChange={this.handleChange}
-                                    className={customCSS.inputs}
-                                />
-                            </label>
+                            {inputFields}
                             <br />
                             <label>
                                 <input
