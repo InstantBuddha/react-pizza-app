@@ -33,7 +33,6 @@ class OrderDetails extends Component {
 
     handleChange(event) {
         let copiedTempState = { ...this.state }
-        console.log(event)
         switch (event.target.name) {
             case "firstName":
                 copiedTempState.tempClientInfo.clientFirstName = event.target.value
@@ -63,7 +62,6 @@ class OrderDetails extends Component {
     }
 
     handleSubmit(event) {
-        console.log(this.state.tempClientInfo)
         const allRegex = {
             clientFirstName: "^[a-zA-Z]{3,}$",
             clientLastName: "^[a-zA-Z]{3,}$",
@@ -84,18 +82,17 @@ class OrderDetails extends Component {
 
         let copiedTempState = { ...this.state }
 
-        
+
         let foundErrorMessages = []
         Object.keys(copiedTempState.tempClientInfo).forEach((key) => {
             if (!this.regexChecker(copiedTempState.tempClientInfo[key], allRegex[key])) {
-                foundErrorMessages.push(errorrMessages[key]) 
+                foundErrorMessages.push(errorrMessages[key])
             }
 
         })
-        console.log(foundErrorMessages)
-        
+
         if (!copiedTempState.tempClientInfo.agreed) {
-            foundErrorMessages.push(errorrMessages.agreed) 
+            foundErrorMessages.push(errorrMessages.agreed)
         }
 
         if (foundErrorMessages.length < 1) {
@@ -103,14 +100,10 @@ class OrderDetails extends Component {
             this.setState(copiedTempState, () => {
                 this.props.orderIsReadyDisplayer(this.state.clientInfo)
             })
-        }else{
+        } else {
             copiedTempState.errorMessage = foundErrorMessages[0]
             this.setState(copiedTempState)
         }
-
-       
-        
-        
 
     }
 
@@ -123,41 +116,47 @@ class OrderDetails extends Component {
         const bootstrapCss = "d-flex flex-column align-items-center"
 
         const formInputs = [
-            {name: "firstName",
-            labelText: "First name:",
-            type:"text",
-            pattern:".+",
-            placeholder:"i.e.: John"
+            {
+                name: "firstName",
+                labelText: "First name:",
+                type: "text",
+                pattern: ".+",
+                placeholder: "i.e.: John"
             },
-            {name: "lastName",
-            labelText: "Last name:",
-            type:"text",
-            pattern:".+",
-            placeholder:"i.e.: Doe"
+            {
+                name: "lastName",
+                labelText: "Last name:",
+                type: "text",
+                pattern: ".+",
+                placeholder: "i.e.: Doe"
             },
-            {name: "address",
-            labelText: "Your address:",
-            type:"text",
-            pattern:".+",
-            placeholder:""
+            {
+                name: "address",
+                labelText: "Your address:",
+                type: "text",
+                pattern: ".+",
+                placeholder: ""
             },
-            {name: "email",
-            labelText: "Your email:",
-            type:"email",
-            pattern:".+",
-            placeholder:""
+            {
+                name: "email",
+                labelText: "Your email:",
+                type: "email",
+                pattern: ".+",
+                placeholder: ""
             },
-            {name: "telephone",
-            labelText: "Your phone number:",
-            type:"tel",
-            pattern:"^[+]?[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",
-            placeholder:""
+            {
+                name: "telephone",
+                labelText: "Your phone number:",
+                type: "tel",
+                pattern: "^[+]?[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",
+                placeholder: ""
             },
-            {name: "notes",
-            labelText: "Your message to the pizzaboy:",
-            type:"notes",
-            pattern:".*",
-            placeholder:"i.e.: The doorbell doesn't work, call me instead"
+            {
+                name: "notes",
+                labelText: "Your message to the pizzaboy:",
+                type: "notes",
+                pattern: ".*",
+                placeholder: "i.e.: The doorbell doesn't work, call me instead"
             },
         ]
 
@@ -170,13 +169,14 @@ class OrderDetails extends Component {
         }
 
         const inputFields = formInputs.map(
-            formInput => <InputField 
+            formInput => <InputField
                 key={formInput.name}
+                name={formInput.name}
                 labelText={formInput.labelText}
                 type={formInput.type}
                 onChange={this.handleChange}
                 pattern={formInput.pattern}
-                placeholder= {formInput.placeholder}
+                placeholder={formInput.placeholder}
                 className={customCSS.inputs} />
         )
         return (
