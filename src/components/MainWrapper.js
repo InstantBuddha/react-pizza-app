@@ -25,6 +25,7 @@ class MainWrapper extends Component {
         this.proceedToCheckout = this.proceedToCheckout.bind(this)
         this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
         this.backToMainPage = this.backToMainPage.bind(this)
+        this.saveUserDetails = this.saveUserDetails.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -59,11 +60,18 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
+    saveUserDetails(detailsToSave){
+        console.log(detailsToSave)
+        let copiedTempState = { ...this.state }
+        copiedTempState.userDetails = { ...detailsToSave}
+        this.setState(copiedTempState)
+    }
+
     proceedToCheckout(){
         this.displaySelector("checkout")
     }
 
-    orderIsReadyDisplayer(clientInfo){
+    orderIsReadyDisplayer(){
         this.displaySelector("foodArriving")
     }
 
@@ -88,9 +96,13 @@ class MainWrapper extends Component {
                             cartItemRemover={this.cartItemRemover}
                             proceedToCheckout={this.proceedToCheckout} />
             case "checkout":
-                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer} />
+                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer}
+                                     saveUserDetails={this.saveUserDetails} />
             case "foodArriving":
-                return <OrderReady backToMainPage={this.backToMainPage}/>                    
+                return <OrderReady backToMainPage={this.backToMainPage}
+                                   orderedPizzas={this.state.inCart.pizzas}
+                                   orderedDrinks={this.state.inCart.drinks}
+                                   userDetails={this.state.userDetails} />                    
             default:
                 break
 

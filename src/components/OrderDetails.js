@@ -98,7 +98,8 @@ class OrderDetails extends Component {
         if (foundErrorMessages.length < 1) {
             copiedTempState.clientInfo = { ...copiedTempState.tempClientInfo }
             this.setState(copiedTempState, () => {
-                this.props.orderIsReadyDisplayer(this.state.clientInfo)
+                this.props.saveUserDetails(this.state.clientInfo)
+                this.props.orderIsReadyDisplayer()
             })
         } else {
             copiedTempState.errorMessage = foundErrorMessages[0]
