@@ -6,12 +6,21 @@ import OrderReady from './OrderReady'
 import PizzasLister from './PizzasLister'
 import TopMenu from './TopMenu'
 
+const constants = {
+    pizzas: "pizzas",
+    drinks: "drinks",
+    cart: "cart",
+    checkout: "checkout",
+    foodArriving: "foodArriving"
+}
+
 class MainWrapper extends Component {
+    
     constructor(props) {
         super(props)
 
         this.state = {
-            whatToShow: "pizzas",
+            whatToShow: constants.pizzas,
             inCart: {
                 pizzas: [],
                 drinks: []
@@ -61,22 +70,21 @@ class MainWrapper extends Component {
     }
 
     saveUserDetails(detailsToSave){
-        console.log(detailsToSave)
         let copiedTempState = { ...this.state }
         copiedTempState.userDetails = { ...detailsToSave}
         this.setState(copiedTempState)
     }
 
     proceedToCheckout(){
-        this.displaySelector("checkout")
+        this.displaySelector(constants.checkout)
     }
 
     orderIsReadyDisplayer(){
-        this.displaySelector("foodArriving")
+        this.displaySelector(constants.foodArriving)
     }
 
     backToMainPage(){
-        this.displaySelector("pizzas")
+        this.displaySelector(constants.pizzas)
     }
 
     displaySelector(toDisplay) {
@@ -87,18 +95,18 @@ class MainWrapper extends Component {
 
     listerReturner() {
         switch (this.state.whatToShow) {
-            case "pizzas":
+            case constants.pizzas:
                 return <PizzasLister productCartAdder={this.productCartAdder} />
-            case "drinks":
+            case constants.drinks:
                 return <DrinksLister productCartAdder={this.productCartAdder} />
-            case "cart":
+            case constants.cart:
                 return <CartLister inCartList={this.state.inCart} 
                             cartItemRemover={this.cartItemRemover}
                             proceedToCheckout={this.proceedToCheckout} />
-            case "checkout":
+            case constants.checkout:
                 return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer}
                                      saveUserDetails={this.saveUserDetails} />
-            case "foodArriving":
+            case constants.foodArriving:
                 return <OrderReady backToMainPage={this.backToMainPage}
                                    orderedPizzas={this.state.inCart.pizzas}
                                    orderedDrinks={this.state.inCart.drinks}
@@ -112,7 +120,7 @@ class MainWrapper extends Component {
     render() {
         return (
             <div>
-                {this.state.whatToShow !== "foodArriving" && <TopMenu displaySelector={this.displaySelector} />}
+                {this.state.whatToShow !== constants.foodArriving && <TopMenu displaySelector={this.displaySelector} />}
                 {this.listerReturner()}
             </div>
         )
