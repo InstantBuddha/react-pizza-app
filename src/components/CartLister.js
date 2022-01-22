@@ -42,7 +42,7 @@ class CartLister extends Component {
     totalPriceCalculator(itemsArray){
         return itemsArray.map( item => {
             return item.price
-        }).reduce( (total, currentprice) =>  total + currentprice )
+        }).reduce( (total, currentprice) =>  total + currentprice ,0)
     }
     
     render() {
@@ -66,6 +66,17 @@ class CartLister extends Component {
                 </div>
                 <div className={bootstrapCss} >
                         <FullPrice fullPrice={this.totalPriceCalculator(cartFullList)} />
+                </div>
+                <div className={bootstrapCss}>
+                    <div className={"w-25 m-1 container "}>
+                    {cartFullList.length > 0 &&
+                        <button className="btn btn-success btn-lg btn-block w-100"
+                                onClick={this.props.proceedToCheckout}
+                                >Order</button>
+                    }
+                    </div>
+                    
+                    
                 </div>
             </div>
         )

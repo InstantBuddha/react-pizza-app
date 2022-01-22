@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
 import CartLister from './CartLister'
 import DrinksLister from './DrinksLister'
+import OrderDetails from './OrderDetails'
+import OrderReady from './OrderReady'
 import PizzasLister from './PizzasLister'
 import TopMenu from './TopMenu'
 
+const constants = {
+    pizzas: "pizzas",
+    drinks: "drinks",
+    cart: "cart",
+    checkout: "checkout",
+    foodArriving: "foodArriving"
+}
+
 class MainWrapper extends Component {
+    
     constructor(props) {
         super(props)
 
         this.state = {
-            whatToShow: "pizzas",
+            whatToShow: constants.pizzas,
             inCart: {
                 pizzas: [],
                 drinks: []
@@ -20,6 +31,10 @@ class MainWrapper extends Component {
         this.displaySelector = this.displaySelector.bind(this)
         this.listerReturner = this.listerReturner.bind(this)
         this.cartItemRemover = this.cartItemRemover.bind(this)
+        this.proceedToCheckout = this.proceedToCheckout.bind(this)
+        this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
+        this.backToMainPage = this.backToMainPage.bind(this)
+        this.saveUserDetails = this.saveUserDetails.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -54,6 +69,24 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
+    saveUserDetails(detailsToSave){
+        let copiedTempState = { ...this.state }
+        copiedTempState.userDetails = { ...detailsToSave}
+        this.setState(copiedTempState)
+    }
+
+    proceedToCheckout(){
+        this.displaySelector(constants.checkout)
+    }
+
+    orderIsReadyDisplayer(){
+        this.displaySelector(constants.foodArriving)
+    }
+
+    backToMainPage(){
+        this.displaySelector(constants.pizzas)
+    }
+
     displaySelector(toDisplay) {
         let copiedTempState = { ...this.state }
         copiedTempState.whatToShow = toDisplay
@@ -62,13 +95,22 @@ class MainWrapper extends Component {
 
     listerReturner() {
         switch (this.state.whatToShow) {
-            case "pizzas":
+            case constants.pizzas:
                 return <PizzasLister productCartAdder={this.productCartAdder} />
-            case "drinks":
+            case constants.drinks:
                 return <DrinksLister productCartAdder={this.productCartAdder} />
-            case "cart":
+            case constants.cart:
                 return <CartLister inCartList={this.state.inCart} 
-                            cartItemRemover={this.cartItemRemover} />
+                            cartItemRemover={this.cartItemRemover}
+                            proceedToCheckout={this.proceedToCheckout} />
+            case constants.checkout:
+                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer}
+                                     saveUserDetails={this.saveUserDetails} />
+            case constants.foodArriving:
+                return <OrderReady backToMainPage={this.backToMainPage}
+                                   orderedPizzas={this.state.inCart.pizzas}
+                                   orderedDrinks={this.state.inCart.drinks}
+                                   userDetails={this.state.userDetails} />                    
             default:
                 break
 
@@ -78,7 +120,7 @@ class MainWrapper extends Component {
     render() {
         return (
             <div>
-                <TopMenu displaySelector={this.displaySelector} />
+                {this.state.whatToShow !== constants.foodArriving && <TopMenu displaySelector={this.displaySelector} />}
                 {this.listerReturner()}
             </div>
         )
