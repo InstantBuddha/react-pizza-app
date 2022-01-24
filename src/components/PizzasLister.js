@@ -25,6 +25,7 @@ class PizzasLister extends Component {
         this.pizzaPriceCalculator = this.pizzaPriceCalculator.bind(this)
         this.cartAdder = this.cartAdder.bind(this)
         this.customizeAdder = this.customizeAdder.bind(this)
+        this.modifiedIngredientListCreator = this.modifiedIngredientListCreator.bind(this)
 
     }
 
@@ -77,12 +78,21 @@ class PizzasLister extends Component {
 
     //new version to go to customize screen
     customizeAdder(addedPizza) {
-        console.log(addedPizza)
+        //console.log(addedPizza)
         let copiedTempState = { ...this.state }
+        const uniqueIngredientsList = this.modifiedIngredientListCreator(addedPizza.ingredientsIDs,this.state.ingredients)
+        copiedTempState.pizzaToModify = addedPizza
+        copiedTempState.pizzaToModify.uniqueIngredientsList = uniqueIngredientsList
         copiedTempState.whatToShow = pizzaConstants.pizzaDetails
-        copiedTempState.pizzaToModify = {addedPizza}
         this.setState(copiedTempState)
         
+    }
+
+    modifiedIngredientListCreator(idsList, allingredients){
+        return allingredients.map((ingredient)=>{
+            ingredient.isAdded = (idsList.includes(ingredient.id) ? true : false)
+            return ingredient
+        })
     }
 
     render() {
@@ -98,12 +108,15 @@ class PizzasLister extends Component {
                 pizzaAdder={this.customizeAdder} />
         )
 
+        console.log(this.state)
         return (
             <div className={bootstrapCss}>
                 {
                     this.state.ready ?
                         this.state.whatToShow == pizzaConstants.pizzas ? 
-                        mappedPizzaCards : <CustomizePizza /> 
+                        mappedPizzaCards : <CustomizePizza pizzaData={this.state.pizzaToModify}
+                                                           basePrice={this.state.basePrice}
+                        /> 
                         : 
                         <i className="fa fa-spinner fa-spin"></i>
                 }
