@@ -17,6 +17,7 @@ class PizzasLister extends Component {
         this.ingredientsStringCreator = this.ingredientsStringCreator.bind(this)
         this.pizzaPriceCalculator = this.pizzaPriceCalculator.bind(this)
         this.cartAdder = this.cartAdder.bind(this)
+        this.customizeAdder = this.customizeAdder.bind(this)
 
     }
 
@@ -37,6 +38,7 @@ class PizzasLister extends Component {
                 copiedTempState.ingredients = response.data
                 copiedTempState.ready = true
                 this.setState(copiedTempState)
+                this.props.saveIngredientsData(this.state)
             })
             .catch(error => { console.log(error) })
 
@@ -60,8 +62,15 @@ class PizzasLister extends Component {
        .reduce((acc, current)=>acc+current, this.state.basePrice)
     }
 
+    //old version to add to cart
     cartAdder(addedPizza){
+        console.log(addedPizza)
         this.props.productCartAdder(addedPizza, "pizza")
+    }
+
+    //new version to go to customize screen
+    customizeAdder(addedPizza){
+
     }
 
     render() {
@@ -77,6 +86,7 @@ class PizzasLister extends Component {
                                 key={pizza.name}
                                 name={pizza.name}
                                 ingredients={this.ingredientsStringCreator(pizza.ingredients)}
+                                ingredientsIDs={pizza.ingredients}
                                 fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
                                 imageUrl={pizza.imageUrl}
                                 pizzaAdder={this.cartAdder} />

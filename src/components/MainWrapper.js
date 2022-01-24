@@ -35,6 +35,7 @@ class MainWrapper extends Component {
         this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
         this.backToMainPage = this.backToMainPage.bind(this)
         this.saveUserDetails = this.saveUserDetails.bind(this)
+        this.saveIngredientsData = this.saveIngredientsData.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -69,6 +70,12 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
+    saveIngredientsData(ingredientsData){
+        let copiedTempState = { ...this.state }
+        copiedTempState.ingredientsData = { ...ingredientsData}
+        this.setState(copiedTempState)
+    }
+
     saveUserDetails(detailsToSave){
         let copiedTempState = { ...this.state }
         copiedTempState.userDetails = { ...detailsToSave}
@@ -96,7 +103,8 @@ class MainWrapper extends Component {
     listerReturner() {
         switch (this.state.whatToShow) {
             case constants.pizzas:
-                return <PizzasLister productCartAdder={this.productCartAdder} />
+                return <PizzasLister productCartAdder={this.productCartAdder}
+                                     saveIngredientsData={this.saveIngredientsData} />
             case constants.drinks:
                 return <DrinksLister productCartAdder={this.productCartAdder} />
             case constants.cart:

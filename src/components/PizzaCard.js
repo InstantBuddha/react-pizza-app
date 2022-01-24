@@ -13,6 +13,7 @@ function PizzaCard(props) {
 
     const buttonCss = "btn btn-success px-1"
 
+    console.log(props.ingredientsIDs)
     return (
         <div key={props.name}
             className={bootstrapStyle}
