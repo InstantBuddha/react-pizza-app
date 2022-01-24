@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import PizzaCard from './PizzaCard'
+import CustomizePizza from './CustomizePizza'
+
+const pizzaConstants = {
+    pizzas: "pizzas",
+    pizzaDetails: "pizzaDetails"
+}
 
 class PizzasLister extends Component {
     constructor(props) {
@@ -10,7 +16,8 @@ class PizzasLister extends Component {
             pizzas: [],
             ingredients: [],
             basePrice: 0,
-            ready: false
+            ready: false,
+            whatToShow: pizzaConstants.pizzas
         }
 
         this.ingredientsLister = this.ingredientsLister.bind(this)
@@ -38,6 +45,7 @@ class PizzasLister extends Component {
                 copiedTempState.ingredients = response.data
                 copiedTempState.ready = true
                 this.setState(copiedTempState)
+                //It might not be necessary
                 this.props.saveIngredientsData(this.state)
             })
             .catch(error => { console.log(error) })
@@ -50,47 +58,54 @@ class PizzasLister extends Component {
         )
     }
 
-    ingredientsStringCreator(pizzaIngredientsIds){
-       return this.ingredientsLister(pizzaIngredientsIds)
-       .map(ingredient => {return ingredient.name})
-       .join(", ")
+    ingredientsStringCreator(pizzaIngredientsIds) {
+        return this.ingredientsLister(pizzaIngredientsIds)
+            .map(ingredient => { return ingredient.name })
+            .join(", ")
     }
 
-    pizzaPriceCalculator(pizzaIngredientsIds){
-       return this.ingredientsLister(pizzaIngredientsIds)
-       .map(ingredient => {return ingredient.price})
-       .reduce((acc, current)=>acc+current, this.state.basePrice)
+    pizzaPriceCalculator(pizzaIngredientsIds) {
+        return this.ingredientsLister(pizzaIngredientsIds)
+            .map(ingredient => { return ingredient.price })
+            .reduce((acc, current) => acc + current, this.state.basePrice)
     }
 
-    //old version to add to cart
-    cartAdder(addedPizza){
-        console.log(addedPizza)
+    //old version to add to cart, to be removed
+    cartAdder(addedPizza) {
         this.props.productCartAdder(addedPizza, "pizza")
     }
 
     //new version to go to customize screen
-    customizeAdder(addedPizza){
-
+    customizeAdder(addedPizza) {
+        console.log(addedPizza)
+        let copiedTempState = { ...this.state }
+        copiedTempState.whatToShow = pizzaConstants.pizzaDetails
+        copiedTempState.pizzaToModify = {addedPizza}
+        this.setState(copiedTempState)
+        
     }
 
     render() {
-        const pizzas = this.state.pizzas
         const bootstrapCss = "d-flex flex-column align-items-center"
+        const mappedPizzaCards = this.state.pizzas.map(
+            pizza => <PizzaCard
+                key={pizza.name}
+                name={pizza.name}
+                ingredients={this.ingredientsStringCreator(pizza.ingredients)}
+                ingredientsIDs={pizza.ingredients}
+                fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
+                imageUrl={pizza.imageUrl}
+                pizzaAdder={this.customizeAdder} />
+        )
 
         return (
             <div className={bootstrapCss}>
                 {
                     this.state.ready ?
-                        pizzas.map(
-                            pizza => <PizzaCard 
-                                key={pizza.name}
-                                name={pizza.name}
-                                ingredients={this.ingredientsStringCreator(pizza.ingredients)}
-                                ingredientsIDs={pizza.ingredients}
-                                fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
-                                imageUrl={pizza.imageUrl}
-                                pizzaAdder={this.cartAdder} />
-                        ) : <i className="fa fa-spinner fa-spin"></i>
+                        this.state.whatToShow == pizzaConstants.pizzas ? 
+                        mappedPizzaCards : <CustomizePizza /> 
+                        : 
+                        <i className="fa fa-spinner fa-spin"></i>
                 }
             </div>
         )

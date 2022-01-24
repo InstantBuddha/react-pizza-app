@@ -71,6 +71,7 @@ class MainWrapper extends Component {
     }
 
     saveIngredientsData(ingredientsData){
+        //it might not be necessary
         let copiedTempState = { ...this.state }
         copiedTempState.ingredientsData = { ...ingredientsData}
         this.setState(copiedTempState)

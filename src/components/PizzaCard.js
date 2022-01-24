@@ -38,7 +38,8 @@ function PizzaCard(props) {
                         {
                             name: props.name,
                             ingredients: props.ingredients,
-                            price: props.fullPrice
+                            price: props.fullPrice,
+                            ingredientsIDs: props.ingredientsIDs
                         })} >
                         <FontAwesomeIcon icon="cart-plus" />
                         {" $" + props.fullPrice}
