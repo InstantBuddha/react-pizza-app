@@ -6,6 +6,7 @@ class CustomizePizza extends Component {
     super(props)
 
     this.state = {
+      originalIngredientsList: this.props.pizzaData.uniqueIngredientsList,
       uniqueIngredientsList: this.props.pizzaData.uniqueIngredientsList
     }
 
@@ -41,6 +42,10 @@ class CustomizePizza extends Component {
           />
         )}
       </div>
+      <button onClick={()=>this.props.cartAdder({name: "testPizza",
+                                                price: 10,
+                                                uniqueId: 99    })}     
+      className="btn btn-success btn-lg btn-block w-100" >Buy this pizza!</button>
 
     </div>
   }

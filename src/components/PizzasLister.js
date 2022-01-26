@@ -71,9 +71,11 @@ class PizzasLister extends Component {
             .reduce((acc, current) => acc + current, this.state.basePrice)
     }
 
-    //old version to add to cart, to be removed
+    //old version to add to cart, to be changed
     cartAdder(addedPizza) {
         this.props.productCartAdder(addedPizza, "pizza")
+        this.state.whatToShow = pizzaConstants.pizzas
+        console.log(addedPizza)
     }
 
     //new version to go to customize screen
@@ -116,6 +118,7 @@ class PizzasLister extends Component {
                         this.state.whatToShow == pizzaConstants.pizzas ? 
                         mappedPizzaCards : <CustomizePizza pizzaData={this.state.pizzaToModify}
                                                            basePrice={this.state.basePrice}
+                                                           cartAdder={this.cartAdder}
                         /> 
                         : 
                         <i className="fa fa-spinner fa-spin"></i>
