@@ -1,12 +1,32 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckSquare, faSquare } from '@fortawesome/free-regular-svg-icons'
+
 function PizzaToppingCard(props) {
-  return <div>
-    <div><h1>{props.isAdded ? "yes" : "no"}</h1></div>
-    <div><h1>{props.name}</h1></div>
-    <div><h1>{props.price}</h1></div>
-      
-  </div>
+
+  const bootstrapStyle = "m-1 border border-secondary container "
+
+  return (
+
+    <div key={props.name}
+      className={bootstrapStyle}>
+      <div className={"row justify-content-between align-items-center"}>
+        <div className="col-2" >
+              {props.isAdded ?
+                <FontAwesomeIcon icon={faCheckSquare}
+                     onClick={ ()=> props.toppingAddedSwitcher(props.isAdded)}  />
+              :
+                <FontAwesomeIcon icon={faSquare}
+                     onClick={ ()=> props.toppingAddedSwitcher(props.isAdded)}  />
+              }
+        </div>
+        <div className="col-8"><h2>{props.name}</h2></div>
+        <div className="col-2"><h5>${props.price}</h5></div>
+      </div>
+
+
+    </div>
+  )
 }
 
 export default React.memo(PizzaToppingCard)
