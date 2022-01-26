@@ -6,14 +6,19 @@ class CustomizePizza extends Component {
     super(props)
 
     this.state = {
-
+      uniqueIngredientsList: this.props.pizzaData.uniqueIngredientsList
     }
 
     this.toppingAddedSwitcher = this.toppingAddedSwitcher.bind(this)
   }
 
-  toppingAddedSwitcher(isAddedNow){
-      console.log(isAddedNow)
+  toppingAddedSwitcher(toppingID){
+      let copiedTempState = { ...this.state }
+      copiedTempState.uniqueIngredientsList.map(topping => {
+        if(topping.id===toppingID){topping.isAdded = !topping.isAdded}
+      })
+      this.setState(copiedTempState)
+      
   }
 
   render() {
@@ -27,8 +32,9 @@ class CustomizePizza extends Component {
       <div className={bootstrapCss}>
         {this.props.pizzaData.uniqueIngredientsList.map(
           ingredient => <PizzaToppingCard
-            key={ingredient.name}
+            key={ingredient.id}
             name={ingredient.name}
+            ingredientID={ingredient.id}
             price={ingredient.price}
             isAdded={ingredient.isAdded}
             toppingAddedSwitcher={this.toppingAddedSwitcher}

@@ -108,7 +108,7 @@ class PizzasLister extends Component {
                 pizzaAdder={this.customizeAdder} />
         )
 
-        console.log(this.state)
+        //console.log(this.state)
         return (
             <div className={bootstrapCss}>
                 {
