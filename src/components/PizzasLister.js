@@ -26,7 +26,7 @@ class PizzasLister extends Component {
         this.cartAdder = this.cartAdder.bind(this)
         this.customizeAdder = this.customizeAdder.bind(this)
         this.modifiedIngredientListCreator = this.modifiedIngredientListCreator.bind(this)
-
+        this.customPriceCalculator = this.customPriceCalculator.bind(this)
     }
 
     async componentDidMount() {
@@ -75,7 +75,7 @@ class PizzasLister extends Component {
     cartAdder(addedPizza) {
         this.props.productCartAdder(addedPizza, "pizza")
         this.state.whatToShow = pizzaConstants.pizzas
-        console.log(addedPizza)
+        //console.log(addedPizza)
     }
 
     //new version to go to customize screen
@@ -85,9 +85,19 @@ class PizzasLister extends Component {
         const uniqueIngredientsList = this.modifiedIngredientListCreator(addedPizza.ingredientsIDs,this.state.ingredients)
         copiedTempState.pizzaToModify = addedPizza
         copiedTempState.pizzaToModify.uniqueIngredientsList = uniqueIngredientsList
+        copiedTempState.pizzaToModify.uniquePrice = this.customPriceCalculator(this.state.basePrice, uniqueIngredientsList)
+        console.log("uniquePrice", copiedTempState.pizzaToModify.uniquePrice)
         copiedTempState.whatToShow = pizzaConstants.pizzaDetails
-        this.setState(copiedTempState)
-        
+        this.setState(copiedTempState)        
+    }
+
+    customPriceCalculator(basePrice, uniqueIngredientsList){
+        //működik, csak belekavarodtam, hogy honnan kell meghívni
+        return uniqueIngredientsList.reduce((fullPrice, ingredientObject)=>{
+            let toAdd = ingredientObject.isAdded ? ingredientObject.price : 0
+            console.log(ingredientObject.isAdded, ingredientObject.price)
+            return fullPrice + toAdd
+        }, basePrice)
     }
 
     modifiedIngredientListCreator(idsList, allingredients){
@@ -119,6 +129,7 @@ class PizzasLister extends Component {
                         mappedPizzaCards : <CustomizePizza pizzaData={this.state.pizzaToModify}
                                                            basePrice={this.state.basePrice}
                                                            cartAdder={this.cartAdder}
+                                                           customPriceCalculator={this.customPriceCalculator}
                         /> 
                         : 
                         <i className="fa fa-spinner fa-spin"></i>

@@ -18,6 +18,7 @@ class CustomizePizza extends Component {
       copiedTempState.uniqueIngredientsList.map(topping => {
         if(topping.id===toppingID){topping.isAdded = !topping.isAdded}
       })
+      console.log(copiedTempState.uniqueIngredientsList)
       this.setState(copiedTempState)
       
   }
