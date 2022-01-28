@@ -26,7 +26,6 @@ class PizzasLister extends Component {
         this.cartAdder = this.cartAdder.bind(this)
         this.customizeAdder = this.customizeAdder.bind(this)
         this.modifiedIngredientListCreator = this.modifiedIngredientListCreator.bind(this)
-        this.customPriceCalculator = this.customPriceCalculator.bind(this)
     }
 
     async componentDidMount() {
@@ -75,29 +74,16 @@ class PizzasLister extends Component {
     cartAdder(addedPizza) {
         this.props.productCartAdder(addedPizza, "pizza")
         this.state.whatToShow = pizzaConstants.pizzas
-        //console.log(addedPizza)
     }
 
     //new version to go to customize screen
     customizeAdder(addedPizza) {
-        //console.log(addedPizza)
         let copiedTempState = { ...this.state }
         const uniqueIngredientsList = this.modifiedIngredientListCreator(addedPizza.ingredientsIDs,this.state.ingredients)
         copiedTempState.pizzaToModify = addedPizza
         copiedTempState.pizzaToModify.uniqueIngredientsList = uniqueIngredientsList
-        copiedTempState.pizzaToModify.uniquePrice = this.customPriceCalculator(this.state.basePrice, uniqueIngredientsList)
-        console.log("uniquePrice", copiedTempState.pizzaToModify.uniquePrice)
         copiedTempState.whatToShow = pizzaConstants.pizzaDetails
         this.setState(copiedTempState)        
-    }
-
-    customPriceCalculator(basePrice, uniqueIngredientsList){
-        //működik, csak belekavarodtam, hogy honnan kell meghívni
-        return uniqueIngredientsList.reduce((fullPrice, ingredientObject)=>{
-            let toAdd = ingredientObject.isAdded ? ingredientObject.price : 0
-            console.log(ingredientObject.isAdded, ingredientObject.price)
-            return fullPrice + toAdd
-        }, basePrice)
     }
 
     modifiedIngredientListCreator(idsList, allingredients){
@@ -120,14 +106,15 @@ class PizzasLister extends Component {
                 pizzaAdder={this.customizeAdder} />
         )
 
-        //console.log(this.state)
         return (
             <div className={bootstrapCss}>
                 {
                     this.state.ready ?
                         this.state.whatToShow == pizzaConstants.pizzas ? 
-                        mappedPizzaCards : <CustomizePizza pizzaData={this.state.pizzaToModify}
+                        mappedPizzaCards : <CustomizePizza pizzaName={this.state.pizzaToModify.name}
+                                                           uniqueIngredientsList={this.state.pizzaToModify.uniqueIngredientsList} 
                                                            basePrice={this.state.basePrice}
+                                                           fullPrice={this.state.pizzaToModify.price}
                                                            cartAdder={this.cartAdder}
                                                            customPriceCalculator={this.customPriceCalculator}
                         /> 

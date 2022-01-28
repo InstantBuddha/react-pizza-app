@@ -14,10 +14,10 @@ function PizzaToppingCard(props) {
         <div className="col-2" >
               {props.isAdded ?
                 <FontAwesomeIcon icon={faCheckSquare}
-                     onClick={ ()=> props.toppingAddedSwitcher(props.ingredientID)}  />
+                     onClick={ ()=> props.checkBoxClicked(props.ingredientID)}  />
               :
                 <FontAwesomeIcon icon={faSquare}
-                     onClick={ ()=> props.toppingAddedSwitcher(props.ingredientID)}  />
+                     onClick={ ()=> props.checkBoxClicked(props.ingredientID)}  />
               }
         </div>
         <div className="col-8"><h2>{props.name}</h2></div>
