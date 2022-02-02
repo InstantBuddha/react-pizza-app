@@ -70,13 +70,12 @@ class PizzasLister extends Component {
             .reduce((acc, current) => acc + current, this.state.basePrice)
     }
 
-    //old version to add to cart, to be changed
     cartAdder(addedPizza) {
+        if (!addedPizza.name){addedPizza.name = addedPizza.originalName}
         this.props.productCartAdder(addedPizza, "pizza")
         this.state.whatToShow = pizzaConstants.pizzas
     }
-
-    //new version to go to customize screen
+    
     customizeAdder(addedPizza) {
         let copiedTempState = { ...this.state }
         const uniqueIngredientsList = this.modifiedIngredientListCreator(addedPizza.ingredientsIDs,this.state.ingredients)

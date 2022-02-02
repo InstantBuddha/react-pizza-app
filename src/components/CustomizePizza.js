@@ -10,21 +10,31 @@ class CustomizePizza extends Component {
       uniqueIngredientsList: this.props.uniqueIngredientsList,
       fullPrice: this.props.fullPrice,
       basePrice: this.props.basePrice,
-      pizzaName: this.props.pizzaName
+      originalName: this.props.pizzaName,
+      customized: false
     }
 
     this.toppingAddedSwitcher = this.toppingAddedSwitcher.bind(this)
     this.fullPriceUpdater = this.fullPriceUpdater.bind(this)
     this.checkBoxClicked = this.checkBoxClicked.bind(this)
+    this.pizzaNameChanger = this.pizzaNameChanger.bind(this)
   }
 
   toppingAddedSwitcher(toppingID) {
     let copiedTempState = { ...this.state }
+    if(!copiedTempState.customized){
+      copiedTempState.customized = true
+    }
+    copiedTempState.pizzaName = this.pizzaNameChanger(copiedTempState.originalName)
     copiedTempState.uniqueIngredientsList.map(topping => {
       if (topping.id === toppingID) { topping.isAdded = !topping.isAdded }
     })
     this.setState(copiedTempState)
 
+  }
+
+  pizzaNameChanger(originalName){
+    return "Custom " + originalName
   }
 
   fullPriceUpdater(basePrice, uniqueIngredientsList) {
@@ -46,7 +56,7 @@ class CustomizePizza extends Component {
     const bootstrapCss = "d-flex flex-column align-items-center"
 
     return <div>
-      <h1>{this.state.pizzaName}</h1>
+      <h1>{this.state.pizzaName ? this.state.pizzaName : this.state.originalName}</h1>
       <h2>Full Price: {this.state.fullPrice}</h2>
       <div className={bootstrapCss}>
         {this.props.uniqueIngredientsList.map(
@@ -62,6 +72,7 @@ class CustomizePizza extends Component {
       </div>
       <button onClick={() => this.props.cartAdder({
         name: this.state.pizzaName,
+        originalName: this.state.originalName,
         price: this.state.fullPrice,
         uniqueId: 99
       })}
