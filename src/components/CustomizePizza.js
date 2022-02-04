@@ -73,8 +73,7 @@ class CustomizePizza extends Component {
       <button onClick={() => this.props.cartAdder({
         name: this.state.pizzaName,
         originalName: this.state.originalName,
-        price: this.state.fullPrice,
-        uniqueId: 99
+        price: this.state.fullPrice
       })}
         className="btn btn-success btn-lg btn-block w-100" >Buy this pizza!</button>
 

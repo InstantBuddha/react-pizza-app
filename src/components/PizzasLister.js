@@ -61,9 +61,9 @@ class PizzasLister extends Component {
             ingredients: [],
             name: "Your Choice Pizza",
             imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/20140704-0532_Balboa_Peninsula.JPG/320px-20140704-0532_Balboa_Peninsula.JPG"
-        }
+        }        
         
-        let emptyAdded = pizzasList.unshift(emptyPizza)
+        pizzasList.unshift(emptyPizza)
     }
 
     ingredientsLister(pizzaIngredientsIds) {
