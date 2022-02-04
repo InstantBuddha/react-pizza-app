@@ -26,6 +26,7 @@ class PizzasLister extends Component {
         this.cartAdder = this.cartAdder.bind(this)
         this.customizeAdder = this.customizeAdder.bind(this)
         this.modifiedIngredientListCreator = this.modifiedIngredientListCreator.bind(this)
+        this.pizzasListAppender = this.pizzasListAppender.bind(this)
     }
 
     async componentDidMount() {
@@ -33,6 +34,8 @@ class PizzasLister extends Component {
         await axios.get("https://doclerlabs.github.io/mobile-native-challenge/pizzas.json")
             .then(response => {
                 let copiedTempState = { ...this.state }
+                //I suppose I know why it works like this, but we should discuss it:
+                this.pizzasListAppender(response.data.pizzas)
                 copiedTempState.pizzas = response.data.pizzas
                 copiedTempState.basePrice = response.data.basePrice
                 this.setState(copiedTempState)
@@ -50,6 +53,17 @@ class PizzasLister extends Component {
             })
             .catch(error => { console.log(error) })
 
+    }
+
+    pizzasListAppender(pizzasList){
+        
+        const emptyPizza = {
+            ingredients: [],
+            name: "Your Choice Pizza",
+            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/20140704-0532_Balboa_Peninsula.JPG/320px-20140704-0532_Balboa_Peninsula.JPG"
+        }
+        
+        let emptyAdded = pizzasList.unshift(emptyPizza)
     }
 
     ingredientsLister(pizzaIngredientsIds) {
