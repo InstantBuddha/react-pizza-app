@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import CartLister from './CartLister'
-import DrinksLister from './DrinksLister'
-import OrderDetails from './OrderDetails'
-import OrderReady from './OrderReady'
-import PizzasLister from './PizzasLister'
+import CartLister from './cart/CartLister'
+import DrinksLister from './drinks/DrinksLister'
+import OrderDetails from './order/OrderDetails'
+import OrderReady from './order/OrderReady'
+import PizzasLister from './pizzas/PizzasLister'
 import TopMenu from './TopMenu'
 
 const constants = {
@@ -35,7 +35,6 @@ class MainWrapper extends Component {
         this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
         this.backToMainPage = this.backToMainPage.bind(this)
         this.saveUserDetails = this.saveUserDetails.bind(this)
-        this.saveIngredientsData = this.saveIngredientsData.bind(this)
     }
 
     productCartAdder(productToAdd, productType) {
@@ -70,12 +69,6 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
-    saveIngredientsData(ingredientsData){
-        //it might not be necessary
-        let copiedTempState = { ...this.state }
-        copiedTempState.ingredientsData = { ...ingredientsData}
-        this.setState(copiedTempState)
-    }
 
     saveUserDetails(detailsToSave){
         let copiedTempState = { ...this.state }

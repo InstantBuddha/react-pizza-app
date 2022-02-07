@@ -16,17 +16,17 @@ class PizzasLister extends Component {
             pizzas: [],
             ingredients: [],
             basePrice: 0,
-            ready: false,
+            isReady: false,
             whatToShow: pizzaConstants.pizzas
         }
 
-        this.ingredientsLister = this.ingredientsLister.bind(this)
-        this.ingredientsStringCreator = this.ingredientsStringCreator.bind(this)
-        this.pizzaPriceCalculator = this.pizzaPriceCalculator.bind(this)
-        this.cartAdder = this.cartAdder.bind(this)
-        this.customizeAdder = this.customizeAdder.bind(this)
-        this.modifiedIngredientListCreator = this.modifiedIngredientListCreator.bind(this)
-        this.pizzasListAppender = this.pizzasListAppender.bind(this)
+        this.listIngredients = this.listIngredients.bind(this)
+        this.createIngredientsString = this.createIngredientsString.bind(this)
+        this.calculatePizzaPrice = this.calculatePizzaPrice.bind(this)
+        this.addToCart = this.addToCart.bind(this)
+        this.addCustomizedPizza = this.addCustomizedPizza.bind(this)
+        this.createModifiedIngredientsList = this.createModifiedIngredientsList.bind(this)
+        this.addToPizzasList = this.addToPizzasList.bind(this)
     }
 
     async componentDidMount() {
@@ -34,8 +34,7 @@ class PizzasLister extends Component {
         await axios.get("https://doclerlabs.github.io/mobile-native-challenge/pizzas.json")
             .then(response => {
                 let copiedTempState = { ...this.state }
-                //I suppose I know why it works like this, but we should discuss it:
-                this.pizzasListAppender(response.data.pizzas)
+                this.addToPizzasList(response.data.pizzas)
                 copiedTempState.pizzas = response.data.pizzas
                 copiedTempState.basePrice = response.data.basePrice
                 this.setState(copiedTempState)
@@ -46,16 +45,14 @@ class PizzasLister extends Component {
             .then(response => {
                 let copiedTempState = { ...this.state }
                 copiedTempState.ingredients = response.data
-                copiedTempState.ready = true
+                copiedTempState.isReady = true
                 this.setState(copiedTempState)
-                //It might not be necessary
-                this.props.saveIngredientsData(this.state)
             })
-            .catch(error => { console.log(error) })
+            .catch(error =>  console.log(error) )
 
     }
 
-    pizzasListAppender(pizzasList){
+    addToPizzasList(pizzasList){
         
         const emptyPizza = {
             ingredients: [],
@@ -66,40 +63,40 @@ class PizzasLister extends Component {
         pizzasList.unshift(emptyPizza)
     }
 
-    ingredientsLister(pizzaIngredientsIds) {
+    listIngredients(pizzaIngredientsIds) {
         return this.state.ingredients.filter(
             element => pizzaIngredientsIds.includes(element.id)
         )
     }
 
-    ingredientsStringCreator(pizzaIngredientsIds) {
-        return this.ingredientsLister(pizzaIngredientsIds)
+    createIngredientsString(pizzaIngredientsIds) {
+        return this.listIngredients(pizzaIngredientsIds)
             .map(ingredient => { return ingredient.name })
             .join(", ")
     }
 
-    pizzaPriceCalculator(pizzaIngredientsIds) {
-        return this.ingredientsLister(pizzaIngredientsIds)
+    calculatePizzaPrice(pizzaIngredientsIds) {
+        return this.listIngredients(pizzaIngredientsIds)
             .map(ingredient => { return ingredient.price })
             .reduce((acc, current) => acc + current, this.state.basePrice)
     }
 
-    cartAdder(addedPizza) {
+    addToCart(addedPizza) {
         if (!addedPizza.name){addedPizza.name = addedPizza.originalName}
         this.props.productCartAdder(addedPizza, "pizza")
         this.state.whatToShow = pizzaConstants.pizzas
     }
     
-    customizeAdder(addedPizza) {
+    addCustomizedPizza(addedPizza) {
         let copiedTempState = { ...this.state }
-        const uniqueIngredientsList = this.modifiedIngredientListCreator(addedPizza.ingredientsIDs,this.state.ingredients)
+        const uniqueIngredientsList = this.createModifiedIngredientsList(addedPizza.ingredientsIDs,this.state.ingredients)
         copiedTempState.pizzaToModify = addedPizza
         copiedTempState.pizzaToModify.uniqueIngredientsList = uniqueIngredientsList
         copiedTempState.whatToShow = pizzaConstants.pizzaDetails
         this.setState(copiedTempState)        
     }
 
-    modifiedIngredientListCreator(idsList, allingredients){
+    createModifiedIngredientsList(idsList, allingredients){
         return allingredients.map((ingredient)=>{
             ingredient.isAdded = (idsList.includes(ingredient.id) ? true : false)
             return ingredient
@@ -112,23 +109,23 @@ class PizzasLister extends Component {
             pizza => <PizzaCard
                 key={pizza.name}
                 name={pizza.name}
-                ingredients={this.ingredientsStringCreator(pizza.ingredients)}
+                ingredients={this.createIngredientsString(pizza.ingredients)}
                 ingredientsIDs={pizza.ingredients}
-                fullPrice={this.pizzaPriceCalculator(pizza.ingredients)}
+                fullPrice={this.calculatePizzaPrice(pizza.ingredients)}
                 imageUrl={pizza.imageUrl}
-                pizzaAdder={this.customizeAdder} />
+                pizzaAdder={this.addCustomizedPizza} />
         )
 
         return (
             <div className={bootstrapCss}>
                 {
-                    this.state.ready ?
+                    this.state.isReady ?
                         this.state.whatToShow == pizzaConstants.pizzas ? 
                         mappedPizzaCards : <CustomizePizza pizzaName={this.state.pizzaToModify.name}
                                                            uniqueIngredientsList={this.state.pizzaToModify.uniqueIngredientsList} 
                                                            basePrice={this.state.basePrice}
                                                            fullPrice={this.state.pizzaToModify.price}
-                                                           cartAdder={this.cartAdder}
+                                                           cartAdder={this.addToCart}
                                                            customPriceCalculator={this.customPriceCalculator}
                         /> 
                         : 

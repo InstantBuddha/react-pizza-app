@@ -12,13 +12,8 @@ function PizzaToppingCard(props) {
       className={bootstrapStyle}>
       <div className={"row justify-content-between align-items-center"}>
         <div className="col-2" >
-              {props.isAdded ?
-                <FontAwesomeIcon icon={faCheckSquare}
+              <FontAwesomeIcon icon={props.isAdded ? faCheckSquare : faSquare}
                      onClick={ ()=> props.checkBoxClicked(props.ingredientID)}  />
-              :
-                <FontAwesomeIcon icon={faSquare}
-                     onClick={ ()=> props.checkBoxClicked(props.ingredientID)}  />
-              }
         </div>
         <div className="col-8"><h2>{props.name}</h2></div>
         <div className="col-2"><h5>${props.price}</h5></div>
