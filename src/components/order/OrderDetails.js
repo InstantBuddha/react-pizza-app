@@ -28,7 +28,7 @@ class OrderDetails extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.regexChecker = this.regexChecker.bind(this)
+        this.checkRegex = this.checkRegex.bind(this)
     }
 
     handleChange(event) {
@@ -85,7 +85,7 @@ class OrderDetails extends Component {
 
         let foundErrorMessages = []
         Object.keys(copiedTempState.tempClientInfo).forEach((key) => {
-            if (!this.regexChecker(copiedTempState.tempClientInfo[key], allRegex[key])) {
+            if (!this.checkRegex(copiedTempState.tempClientInfo[key], allRegex[key])) {
                 foundErrorMessages.push(errorrMessages[key])
             }
 
@@ -99,7 +99,7 @@ class OrderDetails extends Component {
             copiedTempState.clientInfo = { ...copiedTempState.tempClientInfo }
             this.setState(copiedTempState, () => {
                 this.props.saveUserDetails(this.state.clientInfo)
-                this.props.orderIsReadyDisplayer()
+                this.props.displayOrderIsReady()
             })
         } else {
             copiedTempState.errorMessage = foundErrorMessages[0]
@@ -108,7 +108,7 @@ class OrderDetails extends Component {
 
     }
 
-    regexChecker(textToCheck, regex) {
+    checkRegex(textToCheck, regex) {
         const tempRegex = new RegExp(regex)
         return tempRegex.test(textToCheck)
     }

@@ -14,18 +14,18 @@ class CustomizePizza extends Component {
       customized: false
     }
 
-    this.toppingAddedSwitcher = this.toppingAddedSwitcher.bind(this)
-    this.fullPriceUpdater = this.fullPriceUpdater.bind(this)
+    this.switchToppingIsAdded = this.switchToppingIsAdded.bind(this)
+    this.updateFullPrice = this.updateFullPrice.bind(this)
     this.checkBoxClicked = this.checkBoxClicked.bind(this)
-    this.pizzaNameChanger = this.pizzaNameChanger.bind(this)
+    this.changePizzaName = this.changePizzaName.bind(this)
   }
 
-  toppingAddedSwitcher(toppingID) {
+  switchToppingIsAdded(toppingID) {
     let copiedTempState = { ...this.state }
     if(!copiedTempState.customized){
       copiedTempState.customized = true
     }
-    copiedTempState.pizzaName = this.pizzaNameChanger(copiedTempState.originalName)
+    copiedTempState.pizzaName = this.changePizzaName(copiedTempState.originalName)
     copiedTempState.uniqueIngredientsList.map(topping => {
       if (topping.id === toppingID) { topping.isAdded = !topping.isAdded }
     })
@@ -33,11 +33,11 @@ class CustomizePizza extends Component {
 
   }
 
-  pizzaNameChanger(originalName){
+  changePizzaName(originalName){
     return "Custom " + originalName
   }
 
-  fullPriceUpdater(basePrice, uniqueIngredientsList) {
+  updateFullPrice(basePrice, uniqueIngredientsList) {
     let copiedTempState = { ...this.state }
     let newFullPrice = uniqueIngredientsList.reduce((fullPrice, ingredientObject) => {
       let toAdd = ingredientObject.isAdded ? ingredientObject.price : 0
@@ -48,8 +48,8 @@ class CustomizePizza extends Component {
   }
 
   checkBoxClicked(toppingID){
-    this.toppingAddedSwitcher(toppingID)
-    this.fullPriceUpdater(this.state.basePrice, this.state.uniqueIngredientsList)
+    this.switchToppingIsAdded(toppingID)
+    this.updateFullPrice(this.state.basePrice, this.state.uniqueIngredientsList)
   }
 
   render() {
@@ -70,7 +70,7 @@ class CustomizePizza extends Component {
           />
         )}
       </div>
-      <button onClick={() => this.props.cartAdder({
+      <button onClick={() => this.props.addToCart({
         name: this.state.pizzaName,
         originalName: this.state.originalName,
         price: this.state.fullPrice

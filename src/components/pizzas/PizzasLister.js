@@ -83,7 +83,7 @@ class PizzasLister extends Component {
 
     addToCart(addedPizza) {
         if (!addedPizza.name){addedPizza.name = addedPizza.originalName}
-        this.props.productCartAdder(addedPizza, "pizza")
+        this.props.addToCart(addedPizza, "pizza")
         this.state.whatToShow = pizzaConstants.pizzas
     }
     
@@ -125,7 +125,7 @@ class PizzasLister extends Component {
                                                            uniqueIngredientsList={this.state.pizzaToModify.uniqueIngredientsList} 
                                                            basePrice={this.state.basePrice}
                                                            fullPrice={this.state.pizzaToModify.price}
-                                                           cartAdder={this.addToCart}
+                                                           addToCart={this.addToCart}
                                                            customPriceCalculator={this.customPriceCalculator}
                         /> 
                         : 
