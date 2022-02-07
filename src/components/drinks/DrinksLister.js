@@ -11,7 +11,7 @@ class DrinksLister extends Component {
              ready: false
         }
 
-        this.cartAdder = this.cartAdder.bind(this)
+        this.addToCart = this.addToCart.bind(this)
     }
 
     componentDidMount(){
@@ -22,8 +22,8 @@ class DrinksLister extends Component {
         })
     }
 
-    cartAdder(addedDrink){
-        this.props.productCartAdder(addedDrink, "drink")
+    addToCart(addedDrink){
+        this.props.addToCart(addedDrink, "drink")
     }
     
     render() {
@@ -38,7 +38,7 @@ class DrinksLister extends Component {
                         drink => <DrinkCard 
                             key={drink.id}
                             drink={drink}
-                            drinkAdder={this.cartAdder} />
+                            addToCart={this.addToCart} />
                     ) : <i className="fa fa-spinner fa-spin"></i>
                 }
             </div>

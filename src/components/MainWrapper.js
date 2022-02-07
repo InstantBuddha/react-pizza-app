@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import CartLister from './CartLister'
-import DrinksLister from './DrinksLister'
-import OrderDetails from './OrderDetails'
-import OrderReady from './OrderReady'
-import PizzasLister from './PizzasLister'
+import CartLister from './cart/CartLister'
+import DrinksLister from './drinks/DrinksLister'
+import OrderDetails from './order/OrderDetails'
+import OrderReady from './order/OrderReady'
+import PizzasLister from './pizzas/PizzasLister'
 import TopMenu from './TopMenu'
 
 const constants = {
@@ -27,17 +27,17 @@ class MainWrapper extends Component {
             }
         }
 
-        this.productCartAdder = this.productCartAdder.bind(this)
-        this.displaySelector = this.displaySelector.bind(this)
-        this.listerReturner = this.listerReturner.bind(this)
-        this.cartItemRemover = this.cartItemRemover.bind(this)
+        this.addToCart = this.addToCart.bind(this)
+        this.selectDisplay = this.selectDisplay.bind(this)
+        this.returnLister = this.returnLister.bind(this)
+        this.removeFromCart = this.removeFromCart.bind(this)
         this.proceedToCheckout = this.proceedToCheckout.bind(this)
-        this.orderIsReadyDisplayer = this.orderIsReadyDisplayer.bind(this)
+        this.displayOrderIsReady = this.displayOrderIsReady.bind(this)
         this.backToMainPage = this.backToMainPage.bind(this)
         this.saveUserDetails = this.saveUserDetails.bind(this)
     }
 
-    productCartAdder(productToAdd, productType) {
+    addToCart(productToAdd, productType) {
         let copiedTempState = { ...this.state }
         switch (productType) {
             case "pizza":
@@ -53,7 +53,7 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
-    cartItemRemover(toRemove){
+    removeFromCart(toRemove){
         let copiedTempState = { ...this.state }
         let toRemoveCleaned = toRemove.split("")
         switch (toRemoveCleaned[0]) {
@@ -69,6 +69,7 @@ class MainWrapper extends Component {
         this.setState(copiedTempState)
     }
 
+
     saveUserDetails(detailsToSave){
         let copiedTempState = { ...this.state }
         copiedTempState.userDetails = { ...detailsToSave}
@@ -76,35 +77,36 @@ class MainWrapper extends Component {
     }
 
     proceedToCheckout(){
-        this.displaySelector(constants.checkout)
+        this.selectDisplay(constants.checkout)
     }
 
-    orderIsReadyDisplayer(){
-        this.displaySelector(constants.foodArriving)
+    displayOrderIsReady(){
+        this.selectDisplay(constants.foodArriving)
     }
 
     backToMainPage(){
-        this.displaySelector(constants.pizzas)
+        this.selectDisplay(constants.pizzas)
     }
 
-    displaySelector(toDisplay) {
+    selectDisplay(toDisplay) {
         let copiedTempState = { ...this.state }
         copiedTempState.whatToShow = toDisplay
         this.setState(copiedTempState)
     }
 
-    listerReturner() {
+    returnLister() {
         switch (this.state.whatToShow) {
             case constants.pizzas:
-                return <PizzasLister productCartAdder={this.productCartAdder} />
+                return <PizzasLister addToCart={this.addToCart}
+                                     saveIngredientsData={this.saveIngredientsData} />
             case constants.drinks:
-                return <DrinksLister productCartAdder={this.productCartAdder} />
+                return <DrinksLister addToCart={this.addToCart} />
             case constants.cart:
                 return <CartLister inCartList={this.state.inCart} 
-                            cartItemRemover={this.cartItemRemover}
+                            removeFromCart={this.removeFromCart}
                             proceedToCheckout={this.proceedToCheckout} />
             case constants.checkout:
-                return <OrderDetails orderIsReadyDisplayer={this.orderIsReadyDisplayer}
+                return <OrderDetails displayOrderIsReady={this.displayOrderIsReady}
                                      saveUserDetails={this.saveUserDetails} />
             case constants.foodArriving:
                 return <OrderReady backToMainPage={this.backToMainPage}
@@ -120,8 +122,8 @@ class MainWrapper extends Component {
     render() {
         return (
             <div>
-                {this.state.whatToShow !== constants.foodArriving && <TopMenu displaySelector={this.displaySelector} />}
-                {this.listerReturner()}
+                {this.state.whatToShow !== constants.foodArriving && <TopMenu selectDisplay={this.selectDisplay} />}
+                {this.returnLister()}
             </div>
         )
     }

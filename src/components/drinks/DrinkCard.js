@@ -12,7 +12,7 @@ function DrinkCard(props) {
             <div className={"row justify-content-between align-items-center"}>
                 <div className="col-2">
                     <button class= {buttonCss}
-                            onClick={()=> props.drinkAdder(props.drink)} >
+                            onClick={()=> props.addToCart(props.drink)} >
                         <FontAwesomeIcon icon="cart-plus" />
                     </button>
                 </div>

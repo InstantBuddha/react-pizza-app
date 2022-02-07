@@ -8,12 +8,12 @@ class CartLister extends Component {
     
         this.state = {...props}
 
-        this.cartListCreator = this.cartListCreator.bind(this)
-        this.cartItemRemover = this.cartItemRemover.bind(this)
-        this.totalPriceCalculator = this.totalPriceCalculator.bind(this)
+        this.createCartList = this.createCartList.bind(this)
+        this.removeCartItem = this.removeCartItem.bind(this)
+        this.calculateTotalPrice = this.calculateTotalPrice.bind(this)
     }
     
-    cartListCreator(objectToTransform){
+    createCartList(objectToTransform){
         return objectToTransform.pizzas.map(
             (pizza, uniqueId) => {
                 return {
@@ -35,18 +35,18 @@ class CartLister extends Component {
         )
     }
 
-    cartItemRemover(itemId){
-        this.props.cartItemRemover(itemId)
+    removeCartItem(itemId){
+        this.props.removeFromCart(itemId)
     }
 
-    totalPriceCalculator(itemsArray){
+    calculateTotalPrice(itemsArray){
         return itemsArray.map( item => {
             return item.price
         }).reduce( (total, currentprice) =>  total + currentprice ,0)
     }
     
     render() {
-        const cartFullList = this.cartListCreator(this.state.inCartList)
+        const cartFullList = this.createCartList(this.state.inCartList)
         const bootstrapCss = "d-flex flex-column align-items-center"
         
         return (
@@ -61,11 +61,11 @@ class CartLister extends Component {
                         price = {cartItem.price}
                         key = {cartItem.uniqueId}
                         uniqueId = {cartItem.uniqueId}
-                        cartItemRemover={this.cartItemRemover} />
+                        removeCartItem={this.removeCartItem} />
                     )}
                 </div>
                 <div className={bootstrapCss} >
-                        <FullPrice fullPrice={this.totalPriceCalculator(cartFullList)} />
+                        <FullPrice fullPrice={this.calculateTotalPrice(cartFullList)} />
                 </div>
                 <div className={bootstrapCss}>
                     <div className={"w-25 m-1 container "}>
